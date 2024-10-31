@@ -1,4 +1,10 @@
 # PHAT-personalized-helper-and-ai-assistive-tool
+ ______     __    __       ______       ____________
+|   __  \  |  |  |  |     /  __  \     |____    ____|
+|  |__)  | |  |__|  |    /  /__\  \         |  |
+|   ____/  |   __   |   /   ____   \        |  |
+|  |       |  |  |  |  /  /      \  \       |  |
+|__|       |__|  |__| / _/        \_ \      |__|
 Personal AI assistant
 ## For Programming LLM class
 * Write a personal AI assistant that can:
