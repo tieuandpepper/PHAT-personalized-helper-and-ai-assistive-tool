@@ -1,4 +1,4 @@
-# PHAT-personal-helper-and-ai-assistant-tool
+# PHAT-personalized-helper-and-ai-assistive-tool
 Personal AI assistant
 ## For Programming LLM class
 * Write a personal AI assistant that can:
