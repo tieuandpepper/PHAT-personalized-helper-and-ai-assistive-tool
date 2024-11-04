@@ -3,13 +3,13 @@ from pydantic import BaseModel, Field
 import openai
 
 client = openai.Client(
-    base_url="http://127.0.0.1:11434/v1", api_key="EMPTY")
+    base_url="http://localhost:11434/v1/", api_key="ollama")
 
 stop = ['Observation:', 'Observation ']
 def invoke_llm(prompt:str) -> str:
     try:
         response = client.completions.create(
-            model="llama3.1",
+            model="llama3.2",
             prompt=prompt,
             stop=stop,
         )
@@ -21,7 +21,7 @@ def invoke_llm(prompt:str) -> str:
 
 EMAIL_DB="""
 NAME		EMAIL
-Steve Jobs: sjobs@apple.com 
+Phat Tieu: ptieu28@tamu.edu 
 """
 def find_email(query: str) -> str:
     s = "The following lists names and email addresses of my contacts:\n"+EMAIL_DB+"\n Please return email of "+query
