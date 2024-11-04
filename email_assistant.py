@@ -11,7 +11,7 @@ from ollama_server import OllamaServer
 import utils
 # Set scopes for Gmail API
 SCOPES = ["https://www.googleapis.com/auth/gmail.compose"]
-MAX_ITERATION = 5
+MAX_ITERATION = 10
 VERBAL_LEVEL = utils.SILENT
 
 # current directory
@@ -20,10 +20,11 @@ current_dir = os.path.dirname(os.path.abspath(inspect.getfile(inspect.currentfra
 def send_email(receiver_email:str, email_subject:str, email_content:str, sender_email="kevin.tieu.tamu@gmail.com")->str:
   creds = None
   # Load pre-authorized user credentials from the environment.
-  if os.path.exists('google_kevin_tieu_tamu_gmail_auth.json'):
+  path_auth = os.path.join(current_dir,"src","google_kevin_tieu_tamu_gmail_auth.json")
+  if os.path.exists(path_auth):
     # Use OAuth flow to get credentials
     flow = InstalledAppFlow.from_client_secrets_file(
-        'google_kevin_tieu_tamu_gmail_auth.json', SCOPES)
+        path_auth, SCOPES)
     creds = flow.run_local_server(port=0)
 
   try:
@@ -63,7 +64,7 @@ def send_email(receiver_email:str, email_subject:str, email_content:str, sender_
 # print(send_email("kevin.tieu.tamu@gmail.com","phattieuthien@gmail.com","Automated message", "This is a test email message."))
 
 def find_email(model: OllamaServer, name:str) ->str:
-  with open(os.path.join(current_dir,'email_contacts.json'), 'r') as f:
+  with open(os.path.join(current_dir,"data","email_contacts.json"), 'r') as f:
     contacts_list = json.load(f)
   utils.print_level(f"--- find_email input: {name} in {contacts_list}",VERBAL_LEVEL)
   prompt = f"""
@@ -81,9 +82,8 @@ def email_assistant(model: OllamaServer,request):
     prompt = f"""
 You are my email assistant. You have access to the following tools:
     
-FindEmail: "find the email address of my contacts. Input is enclosed by the character < and >" 
+FindEmail: "find the email address of my contacts. Input must be enclosed by the character < and >" 
 SendEmail: "Send email tool. Input is a json object with {{"receiver_email": str, "subject": str, "body": str}}."
-
 To craft an email, you should use FindEmail first to find correct email addresses (receiver_email) from my contacts.
 
 If I ask you to send an email, please respond with the following format exactly:
@@ -161,5 +161,5 @@ Thought:
             tool_output = f"Error: wrong LLM response\n{llm_output}"
             print(f"\n-------\nError: wrong LLM response\n{llm_output}\n-------\n")
 
-        prompt = prompt+"\Feedback: "+str(tool_output)+"\n"
+        prompt = prompt+"\nFeedback: "+str(tool_output)+"\n"
     print(f"The Email Assistant failed to send your email. Here is the log: {prompt}")

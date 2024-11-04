@@ -16,7 +16,7 @@ class OllamaServer:
             # required but ignored
             api_key='ollama',
         )
-        print("Complete!")
+        print("Completed!")
 
     def invoke_model(self,prompt:str)->str:
         try:
